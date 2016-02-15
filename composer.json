@@ -1,0 +1,35 @@
+{
+    "name": "grandslam/koning-library",
+    "description": "TYPO3 Extension: Library - ViewHelpers, Abstract classes, Wizards and Utilities",
+    "type": "typo3-cms-extension",
+
+    "keywords": [
+        "TYPO3",
+        "CMS",
+        "Koning",
+        "Library"
+    ],
+    "homepage": "https://github.com/GrandSlamMediaNL/koning_library",
+    "license": "LGPL-3.0+",
+
+    "autoload": {
+        "psr-4": {
+            "Keizer\\KoningLibrary\\": "Classes/"
+        }
+    },
+
+    "version": "1.0.0",
+
+    "authors": [
+        {
+            "name": "Jesper Paardekooper",
+            "email": "j.paardekooper@grandslam-media.nl",
+            "homepage": "http://grandslam-media.nl"
+        },
+        {
+            "name": "Benjamin Serfhos",
+            "email": "benjamin@serfhos.com",
+            "homepage": "http://serfhos.com"
+        }
+    ]
+}
