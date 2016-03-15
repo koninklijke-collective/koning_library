@@ -4,7 +4,7 @@ namespace Keizer\KoningLibrary\TYPO3;
 /**
  * Preview external tables
  *
- * @package ERIM\ErimPageOptions\Hook
+ * @package Keizer\KoningLibrary\TYPO3
  */
 class TceMainPreviewHook implements \TYPO3\CMS\Core\SingletonInterface
 {
