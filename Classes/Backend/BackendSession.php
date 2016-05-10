@@ -10,17 +10,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  */
 class BackendSession
 {
-
-    /**
-     * @var mixed
-     */
-    protected $contents;
-
-    /**
-     * @var string
-     */
-    protected $key;
-
     /**
      * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
@@ -45,23 +34,21 @@ class BackendSession
      */
     public function createSession($key, $contents = null)
     {
-        $this->key = $key;
-        $this->contents = $contents;
-
         if ($this->backendUserAuthentication->getSessionData($key) === null) {
-            $this->saveSessionData(array('contents' => $contents));
+            $this->saveSessionData($key, array('contents' => $contents));
         }
     }
 
     /**
      * Save the provided array into the session
      *
+     * @param string $key
      * @param array $sessionArray
      * @return void
      */
-    protected function saveSessionData(array $sessionArray)
+    protected function saveSessionData($key, array $sessionArray)
     {
-        $this->backendUserAuthentication->setAndSaveSessionData($this->key, serialize($sessionArray));
+        $this->backendUserAuthentication->setAndSaveSessionData($key, serialize($sessionArray));
     }
 
     /**
@@ -85,11 +72,12 @@ class BackendSession
     /**
      * Saves the provided contents into the session
      *
+     * @param string $key
      * @param mixed $contents
      * @return void
      */
-    public function saveSessionContents($contents)
+    public function saveSessionContents($key, $contents)
     {
-        $this->saveSessiondata(array('contents' => $contents));
+        $this->saveSessiondata($key, array('contents' => $contents));
     }
 }
