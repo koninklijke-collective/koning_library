@@ -86,6 +86,7 @@ abstract class AbstractModuleController extends AbstractActionController
      * Set up the doc header properly here
      *
      * @param ViewInterface $view
+     * @return void
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -98,7 +99,7 @@ abstract class AbstractModuleController extends AbstractActionController
     }
 
     /**
-     * Creates te URI for a backend action
+     * Creates the URI for a backend action
      *
      * @param string $controller
      * @param string $action
