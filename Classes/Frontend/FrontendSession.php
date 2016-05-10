@@ -1,6 +1,11 @@
 <?php
 namespace Keizer\KoningLibrary\Frontend;
 
+use Keizer\KoningLibrary\Domain\Session\SessionInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Utility\EidUtility;
+
 /**
  * Frontend session wrapper
  *
@@ -8,19 +13,24 @@ namespace Keizer\KoningLibrary\Frontend;
  */
 class SessionService
 {
+
+    /**
+     * @var FrontendUserAuthentication
+     */
+    protected $frontendUserAuthentication;
+
     /**
      * Get the object from the session. Create new one if it does not exist yet
      *
      * @param string $sessionKey
      * @param string $sessionObject
-     * @return \Keizer\KoningLibrary\Domain\Session\SessionInterface
+     * @return SessionInterface
      */
     public function getSession($sessionKey, $sessionObject)
     {
-        $sessionData = $GLOBALS['TSFE']->fe_user->getKey('ses', $sessionKey);
-
+        $sessionData = $this->getFrontendUserAuthentication()->getKey('ses', $sessionKey);
         if ($sessionData === null) {
-            $newObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($sessionObject);
+            $newObject = GeneralUtility::makeInstance($sessionObject);
             $this->saveSessionData($sessionKey, array('sessionObject' => $newObject));
             return $newObject;
         }
@@ -33,24 +43,47 @@ class SessionService
      * Save the specified object into the session
      *
      * @param string $key
-     * @param \Keizer\KoningLibrary\Domain\Session\SessionInterface $session
+     * @param SessionInterface $session
      * @return void
      */
-    public function saveSession($key, \Keizer\KoningLibrary\Domain\Session\SessionInterface $session)
+    public function saveSession($key, SessionInterface $session)
     {
-        $this->saveSessiondata($key, array('sessionObject' => $session));
+        $this->saveSessionData($key, array('sessionObject' => $session));
     }
 
     /**
      * Save the specified array into the session
      *
-     * @parm string $key
-     * @param array $sessionArray
+     * @param string $key
+     * @param array $session
      * @return void
      */
-    protected function saveSessionData($key, array $sessionArray)
+    protected function saveSessionData($key, array $session)
     {
-        $GLOBALS['TSFE']->fe_user->setKey('ses', $key, serialize($sessionArray));
-        $GLOBALS['TSFE']->fe_user->storeSessionData();
+        $this->getFrontendUserAuthentication()->setKey('ses', $key, serialize($session));
+        $this->getFrontendUserAuthentication()->storeSessionData();
+    }
+
+    /**
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
+    }
+
+    /**
+     * @return FrontendUserAuthentication
+     */
+    protected function getFrontendUserAuthentication()
+    {
+        if ($this->frontendUserAuthentication === null) {
+            if ($this->getTypoScriptFrontendController() !== null) {
+                $this->frontendUserAuthentication = $this->getTypoScriptFrontendController()->fe_user;
+            } else {
+                $this->frontendUserAuthentication = EidUtility::initFeUser();
+            }
+        }
+        return $this->frontendUserAuthentication;
     }
 }

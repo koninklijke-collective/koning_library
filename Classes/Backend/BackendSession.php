@@ -11,18 +11,26 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 class BackendSession
 {
     /**
-     * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @var BackendUserAuthentication
      */
     protected $backendUserAuthentication;
 
     /**
-     * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $backendUserAuthentication
+     * @param BackendUserAuthentication $backendUserAuthentication
      * @return BackendSession
      */
     public function setBackendUserAuthentication(BackendUserAuthentication $backendUserAuthentication)
     {
         $this->backendUserAuthentication = $backendUserAuthentication;
         return $this;
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUserAuthentication()
+    {
+        return $this->backendUserAuthentication;
     }
 
     /**
@@ -34,7 +42,7 @@ class BackendSession
      */
     public function createSession($key, $contents = null)
     {
-        if ($this->backendUserAuthentication->getSessionData($key) === null) {
+        if ($this->getBackendUserAuthentication()->getSessionData($key) === null) {
             $this->saveSessionData($key, array('contents' => $contents));
         }
     }
@@ -48,7 +56,7 @@ class BackendSession
      */
     protected function saveSessionData($key, array $sessionArray)
     {
-        $this->backendUserAuthentication->setAndSaveSessionData($key, serialize($sessionArray));
+        $this->getBackendUserAuthentication()->setAndSaveSessionData($key, serialize($sessionArray));
     }
 
     /**
@@ -59,7 +67,7 @@ class BackendSession
      */
     public function getSessionContents($key)
     {
-        $sessionData = $this->backendUserAuthentication->getSessionData($key);
+        $sessionData = $this->getBackendUserAuthentication()->getSessionData($key);
         if ($sessionData !== null) {
             $unserializeData = unserialize($sessionData);
             if (isset($unserializeData['contents'])) {
@@ -78,6 +86,6 @@ class BackendSession
      */
     public function saveSessionContents($key, $contents)
     {
-        $this->saveSessiondata($key, array('contents' => $contents));
+        $this->saveSessionData($key, array('contents' => $contents));
     }
 }
