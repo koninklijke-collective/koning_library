@@ -6,6 +6,6 @@ namespace Keizer\KoningLibrary\Domain\Session;
  *
  * @package Keizer\KoningLibrary\Domain\Session
  */
-class SessionInterface
+interface SessionInterface
 {
 }
