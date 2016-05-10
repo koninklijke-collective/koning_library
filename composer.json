@@ -1,5 +1,5 @@
 {
-    "name": "grandslam/koning-library",
+    "name": "koninklijke-collective/koning-library",
     "description": "TYPO3 Extension: Library - ViewHelpers, Abstract classes, Wizards and Utilities",
     "type": "typo3-cms-extension",
 
@@ -9,7 +9,7 @@
         "Koning",
         "Library"
     ],
-    "homepage": "https://github.com/GrandSlamMediaNL/koning_library",
+    "homepage": "https://github.com/koninklijke-collective/koning_library",
     "license": "LGPL-3.0+",
 
     "autoload": {
@@ -23,12 +23,12 @@
     "authors": [
         {
             "name": "Jesper Paardekooper",
-            "email": "j.paardekooper@grandslam-media.nl",
+            "email": "jesper@koninklijk.io",
             "homepage": "http://grandslam-media.nl"
         },
         {
             "name": "Benjamin Serfhos",
-            "email": "benjamin@serfhos.com",
+            "email": "benjamin@koninklijk.io",
             "homepage": "http://serfhos.com"
         }
     ]
