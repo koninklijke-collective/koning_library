@@ -13,7 +13,6 @@ use TYPO3\CMS\Frontend\Utility\EidUtility;
  */
 class SessionService
 {
-
     /**
      * @var FrontendUserAuthentication
      */
