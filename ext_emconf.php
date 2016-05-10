@@ -1,10 +1,10 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = array(
-    'title' => 'Koning: Generic Library',
+    'title' => 'Koning: Library',
     'description' => 'ViewHelpers, Abstract classes, Wizards and Utilities',
     'category' => 'misc',
-    'version' => '1.0.0',
+    'version' => '1.0.1',
     'state' => 'stable',
     'clearCacheOnLoad' => true,
     'author' => 'Jesper Paardekooper,Benjamin Serfhos',
