@@ -8,7 +8,6 @@ namespace Keizer\KoningLibrary\TYPO3;
  */
 class TceMainPreviewHook implements \TYPO3\CMS\Core\SingletonInterface
 {
-
     /**
      * @param array $fieldArray
      * @param string $table
