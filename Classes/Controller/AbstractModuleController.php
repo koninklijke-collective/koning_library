@@ -40,14 +40,8 @@ abstract class AbstractModuleController extends AbstractActionController
         // Load needed javascript libraries
         $this->getPageRenderer()->loadExtJS();
         $this->getPageRenderer()->loadJquery();
-
-        // load Utility class
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Utility');
-
-        // load Notification functionality
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Notification');
-
-        // load Modals
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
     }
 
