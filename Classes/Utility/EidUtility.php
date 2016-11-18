@@ -2,7 +2,7 @@
 namespace Keizer\KoningLibrary\Utility;
 
 /**
- * Utility: EID invokes
+ * Utility: AJAX EID interaction
  *
  * @package Keizer\KoningLibrary\Utility
  */
