@@ -29,7 +29,7 @@ class EidUtility
             $controller->initTemplate();
         }
 
-        if (!empty($controller->config)) {
+        if (empty($controller->config)) {
             $controller->getConfigArray();
         }
 
