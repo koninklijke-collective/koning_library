@@ -111,7 +111,7 @@ class TwitterCardViewHelper extends AbstractViewHelper
      */
     protected function getPageRenderer()
     {
-        if ('FE' === TYPO3_MODE && is_callable(array($this->getTypoScriptFrontendController(), 'getPageRenderer'))) {
+        if ('FE' === TYPO3_MODE && is_callable([$this->getTypoScriptFrontendController(), 'getPageRenderer'])) {
             return $this->getTypoScriptFrontendController()->getPageRenderer();
         } else {
             return GeneralUtility::makeInstance('TYPO3\CMS\Core\Page\PageRenderer');

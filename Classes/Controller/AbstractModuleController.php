@@ -69,7 +69,7 @@ abstract class AbstractModuleController extends AbstractActionController
      * Resolve view and initialize the general view-variables extensionName,
      * controllerName and actionName based on the request object
      *
-     * @return \TYPO3\CMS\Fluid\View\TemplateView
+     * @return ViewInterface
      */
     protected function resolveView()
     {

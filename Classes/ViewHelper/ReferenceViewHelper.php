@@ -16,6 +16,11 @@ class ReferenceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 {
 
     /**
+     * @var boolean
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @param integer $uid
      * @param string $table
      * @param string $field

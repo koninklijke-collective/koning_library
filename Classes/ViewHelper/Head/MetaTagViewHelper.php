@@ -65,7 +65,7 @@ class MetaTagViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBase
      */
     protected function getPageRenderer()
     {
-        if ('FE' === TYPO3_MODE && is_callable(array($this->getTypoScriptFrontendController(), 'getPageRenderer'))) {
+        if ('FE' === TYPO3_MODE && is_callable([$this->getTypoScriptFrontendController(), 'getPageRenderer'])) {
             return $this->getTypoScriptFrontendController()->getPageRenderer();
         } else {
             return GeneralUtility::makeInstance('TYPO3\CMS\Core\Page\PageRenderer');

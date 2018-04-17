@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
  * </output>
  *
  * @package Keizer\KoningLibrary\ViewHelper\Link
+ * @deprecated
  */
 class TypoLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
@@ -67,11 +68,11 @@ class TypoLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
      * @param array $configuration
      * @return string Rendered page URI
      */
-    public function render($parameter = null, $configuration = array())
+    public function render($parameter = null, $configuration = [])
     {
-        $typoLinkConfiguration = array(
+        $typoLinkConfiguration = [
             'parameter' => ($parameter) ? $parameter : $this->contentObject->data['pid'],
-        );
+        ];
 
         if (!empty($configuration)) {
             ArrayUtility::mergeRecursiveWithOverrule($typoLinkConfiguration, $configuration);

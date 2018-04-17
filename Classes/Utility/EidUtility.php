@@ -30,12 +30,16 @@ class EidUtility
         }
 
         if (empty($controller->config)) {
-            $controller->getConfigArray();
+            try {
+                $controller->getConfigArray();
+            } catch (\Exception $e) {
+                // Do nothing
+            }
         }
 
         static::initializeContentObjectRenderer();
 
-        if (empty($controller->indexedDocTitle)) {
+        if (empty($controller->indexedDocTitle) && is_callable('\TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit')) {
             \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
         }
     }
@@ -63,6 +67,14 @@ class EidUtility
                 $pageId,
                 0
             );
+
+            // @TODO: deprecated workaround since 8/9
+            $bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
+            if (is_callable([$bootstrap, 'loadExtensionTables'])) {
+                $bootstrap->loadExtensionTables();
+            } elseif (is_callable([$bootstrap, 'loadCachedTca'])) {
+                $bootstrap->loadCachedTca();
+            }
         }
     }
 
