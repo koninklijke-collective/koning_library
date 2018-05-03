@@ -6,7 +6,7 @@
 .. include:: ../Includes.txt
 .. index:: Content Wizards
 
-Content Wizards
+!DEPRECATED! Content Wizards
 ---------------
 
 Cause all our content wizards had the same stupid functions we made a generic abstract wizard class for you to extend.

@@ -8,6 +8,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Abstract Wizard
  *
  * @package Keizer\KoningLibrary\Wizard
+ * @deprecated
  */
 abstract class AbstractWizard implements \TYPO3\CMS\Core\SingletonInterface
 {

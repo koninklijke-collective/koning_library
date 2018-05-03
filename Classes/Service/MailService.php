@@ -73,9 +73,10 @@ class MailService implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $attachments
      * @return boolean
      */
-    public function sendMail(array $recipient, array $sender, $subject, $templateName, array $bcc = [], array $variables = [], array $attachments = []) {
+    public function sendMail(array $recipient, array $sender, $subject, $templateName, array $bcc = [], array $variables = [], array $attachments = [])
+    {
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
-        $emailView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $emailView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
         $emailView->setFormat('html');
         $emailView->setLayoutRootPaths($this->layoutRootPaths);
         $emailView->setTemplateRootPaths($this->templateRootPaths);
@@ -84,7 +85,7 @@ class MailService implements \TYPO3\CMS\Core\SingletonInterface
         $emailView->assignMultiple($variables);
         $emailBody = $emailView->render();
 
-        $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
         /** @var \TYPO3\CMS\Core\Mail\MailMessage $message */
         $message
             ->setTo($recipient)

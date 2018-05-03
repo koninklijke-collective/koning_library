@@ -43,7 +43,7 @@ class BackendSession
     public function createSession($key, $contents = null)
     {
         if ($this->getBackendUserAuthentication()->getSessionData($key) === null) {
-            $this->saveSessionData($key, array('contents' => $contents));
+            $this->saveSessionData($key, ['contents' => $contents]);
         }
     }
 
@@ -86,6 +86,6 @@ class BackendSession
      */
     public function saveSessionContents($key, $contents)
     {
-        $this->saveSessionData($key, array('contents' => $contents));
+        $this->saveSessionData($key, ['contents' => $contents]);
     }
 }

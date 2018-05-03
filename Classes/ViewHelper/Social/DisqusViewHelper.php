@@ -21,7 +21,7 @@ class DisqusViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
     /**
      * @var boolean
      */
-    protected $escapingInterceptorEnabled = false;
+    protected $escapeOutput = false;
 
     /**
      * Render disqus thread

@@ -19,7 +19,7 @@ class ResourceUtility
      */
     public static function getReferenceObjects($uid, $table, $field)
     {
-        $fileReferenceObjects = array();
+        $fileReferenceObjects = [];
 
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
         $database = &$GLOBALS['TYPO3_DB'];
@@ -35,7 +35,7 @@ class ResourceUtility
 
         if (!empty($references)) {
             foreach ($references as $reference) {
-                $referenceUid = (int) $reference['uid'];
+                $referenceUid = (int)$reference['uid'];
                 if ($referenceUid > 0) {
                     try {
                         $referenceObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($referenceUid);
@@ -57,7 +57,7 @@ class ResourceUtility
      * @param string $content
      * @param array $additionalHeaders
      */
-    public static function stream($fileName, $content, $additionalHeaders = array())
+    public static function stream($fileName, $content, $additionalHeaders = [])
     {
         foreach ($additionalHeaders as $type => $value) {
             header($type . ': ' . $value);

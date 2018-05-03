@@ -30,7 +30,7 @@ class SessionService
         $sessionData = $this->getFrontendUserAuthentication()->getKey('ses', $sessionKey);
         if ($sessionData === null) {
             $newObject = GeneralUtility::makeInstance($sessionObject);
-            $this->saveSessionData($sessionKey, array('sessionObject' => $newObject));
+            $this->saveSessionData($sessionKey, ['sessionObject' => $newObject]);
             return $newObject;
         }
 
@@ -47,7 +47,7 @@ class SessionService
      */
     public function saveSession($key, SessionInterface $session)
     {
-        $this->saveSessionData($key, array('sessionObject' => $session));
+        $this->saveSessionData($key, ['sessionObject' => $session]);
     }
 
     /**
