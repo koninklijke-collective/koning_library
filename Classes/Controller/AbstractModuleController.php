@@ -37,31 +37,9 @@ abstract class AbstractModuleController extends AbstractActionController
         parent::initializeAction();
 
         // Load needed javascript libraries
-        $this->getPageRenderer()->loadExtJS();
-        $this->getPageRenderer()->loadJquery();
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Utility');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Notification');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-    }
-
-    /**
-     * Set up the view template configuration correctly for BackendTemplateView
-     * This is needed to correctly handle typoscript setup
-     *
-     * @see https://forge.typo3.org/issues/73367
-     * @param  \TYPO3\CMS\Extbase\Mvc\View\ViewInterface  $view
-     * @return void
-     */
-    protected function setViewConfiguration(ViewInterface $view)
-    {
-        if (class_exists('\TYPO3\CMS\Backend\View\BackendTemplateView') && ($view instanceof \TYPO3\CMS\Backend\View\BackendTemplateView)) {
-            /** @var \TYPO3\CMS\Fluid\View\TemplateView $_view */
-            $_view = $this->getObjectManager()->get(\TYPO3\CMS\Fluid\View\TemplateView::class);
-            $this->setViewConfiguration($_view);
-            $view->injectTemplateView($_view);
-        } else {
-            parent::setViewConfiguration($view);
-        }
     }
 
     /**
