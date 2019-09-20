@@ -9,16 +9,14 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  */
 class BackendSession
 {
-    /**
-     * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
+    /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
     protected $backendUserAuthentication;
 
     /**
      * @param  \TYPO3\CMS\Core\Authentication\BackendUserAuthentication  $backendUserAuthentication
      * @return \Keizer\KoningLibrary\Backend\BackendSession
      */
-    public function setBackendUserAuthentication(BackendUserAuthentication $backendUserAuthentication)
+    public function setBackendUserAuthentication(BackendUserAuthentication $backendUserAuthentication): self
     {
         $this->backendUserAuthentication = $backendUserAuthentication;
 
@@ -28,7 +26,7 @@ class BackendSession
     /**
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $this->backendUserAuthentication;
     }
@@ -40,7 +38,7 @@ class BackendSession
      * @param  mixed  $contents
      * @return void
      */
-    public function createSession($key, $contents = null)
+    public function createSession(string $key, $contents = null): void
     {
         if ($this->getBackendUserAuthentication()->getSessionData($key) === null) {
             $this->saveSessionData($key, ['contents' => $contents]);
@@ -51,12 +49,12 @@ class BackendSession
      * Save the provided array into the session
      *
      * @param  string  $key
-     * @param  array  $sessionArray
+     * @param  array  $contents
      * @return void
      */
-    protected function saveSessionData($key, array $sessionArray)
+    protected function saveSessionData(string $key, array $contents): void
     {
-        $this->getBackendUserAuthentication()->setAndSaveSessionData($key, serialize($sessionArray));
+        $this->getBackendUserAuthentication()->setAndSaveSessionData($key, serialize($contents));
     }
 
     /**
@@ -65,7 +63,7 @@ class BackendSession
      * @param  string  $key
      * @return mixed
      */
-    public function getSessionContents($key)
+    public function getSessionContents(string $key)
     {
         $sessionData = $this->getBackendUserAuthentication()->getSessionData($key);
         if ($sessionData !== null) {
@@ -85,7 +83,7 @@ class BackendSession
      * @param  mixed  $contents
      * @return void
      */
-    public function saveSessionContents($key, $contents)
+    public function saveSessionContents(string $key, $contents): void
     {
         $this->saveSessionData($key, ['contents' => $contents]);
     }

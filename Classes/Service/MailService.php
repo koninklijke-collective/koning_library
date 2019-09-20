@@ -13,34 +13,20 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class MailService implements SingletonInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $templateRootPaths = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $layoutRootPaths = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $partialRootPaths = [];
 
     /**
-     * @return array
-     */
-    public function getTemplateRootPath()
-    {
-        return $this->templateRootPaths;
-    }
-
-    /**
-     * @param  string  $templateRootPaths
+     * @param  array  $templateRootPaths
      * @return \Keizer\KoningLibrary\Service\MailService
      */
-    public function setTemplateRootPaths($templateRootPaths)
+    public function setTemplateRootPaths(array $templateRootPaths): self
     {
         $this->templateRootPaths = $templateRootPaths;
 
@@ -48,10 +34,10 @@ class MailService implements SingletonInterface
     }
 
     /**
-     * @param  string  $layoutRootPaths
+     * @param  array  $layoutRootPaths
      * @return \Keizer\KoningLibrary\Service\MailService
      */
-    public function setLayoutRootPaths($layoutRootPaths)
+    public function setLayoutRootPaths(array $layoutRootPaths): self
     {
         $this->layoutRootPaths = $layoutRootPaths;
 
@@ -62,7 +48,7 @@ class MailService implements SingletonInterface
      * @param  array  $partialRootPaths
      * @return \Keizer\KoningLibrary\Service\MailService
      */
-    public function setPartialRootPaths($partialRootPaths)
+    public function setPartialRootPaths(array $partialRootPaths): self
     {
         $this->partialRootPaths = $partialRootPaths;
 
@@ -84,12 +70,12 @@ class MailService implements SingletonInterface
     public function sendMail(
         array $recipient,
         array $sender,
-        $subject,
-        $templateName,
+        string $subject,
+        string $templateName,
         array $bcc = [],
         array $variables = [],
         array $attachments = []
-    ) {
+    ): bool {
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
         $emailView = GeneralUtility::makeInstance(StandaloneView::class);
         $emailView->setFormat('html');

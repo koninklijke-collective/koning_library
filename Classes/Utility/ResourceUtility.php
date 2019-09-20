@@ -3,16 +3,17 @@
 namespace Keizer\KoningLibrary\Utility;
 
 use Exception;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Resource\FileReference;
+use PDO;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Utility: Resource download
  */
 class ResourceUtility
 {
-
     /**
      * Try to retrieve all reference objects
      *
@@ -21,39 +22,44 @@ class ResourceUtility
      * @param  string  $field
      * @return array<\TYPO3\CMS\Core\Resource\FileReference>
      */
-    public static function getReferenceObjects($uid, $table, $field)
+    public static function getReferenceObjects(int $uid, string $table, string $field): array
     {
         $fileReferenceObjects = [];
 
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $database */
-        $database = &$GLOBALS['TYPO3_DB'];
-        $references = $database->exec_SELECTgetRows(
-            'uid',
-            'sys_file_reference',
-            'tablenames = ' . $database->fullQuoteStr($table, 'sys_file_reference')
-            . ' AND fieldname=' . $database->fullQuoteStr($field, 'sys_file_reference')
-            . ' AND uid_foreign=' . intval($uid)
-            . BackendUtility::deleteClause('sys_file_reference')
-            . BackendUtility::versioningPlaceholderClause('sys_file_reference')
-        );
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_file_reference');
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
 
-        if (!empty($references)) {
-            foreach ($references as $reference) {
-                $referenceUid = (int)$reference['uid'];
-                if ($referenceUid > 0) {
-                    try {
-                        $referenceObject = ResourceFactory::getInstance()
-                            ->getFileReferenceObject($referenceUid);
-                        if ($referenceObject instanceof FileReference) {
-                            $fileReferenceObjects[] = $referenceObject;
-                        }
-                    } catch (Exception $e) {
-                    }
+        $query = $queryBuilder
+            ->select('*')
+            ->from('sys_file_reference')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'tablenames',
+                    $queryBuilder->createNamedParameter($table)
+                ),
+                $queryBuilder->expr()->eq(
+                    'fieldname',
+                    $queryBuilder->createNamedParameter($field)
+                ),
+                $queryBuilder->expr()->eq(
+                    'uid_foreign',
+                    $queryBuilder->createNamedParameter($field, PDO::PARAM_INT)
+                )
+            );
+        $result = $query->execute();
+        while ($reference = $result->fetch()) {
+            $referenceUid = (int)$reference['uid'];
+            if ($referenceUid > 0) {
+                try {
+                    $fileReferenceObjects[] = ResourceFactory::getInstance()
+                        ->getFileReferenceObject($referenceUid);
+                } catch (Exception $e) {
                 }
             }
         }
 
-        return $fileReferenceObjects;
+        return array_filter($fileReferenceObjects);
     }
 
     /**
@@ -63,7 +69,7 @@ class ResourceUtility
      * @param  string  $content
      * @param  array  $additionalHeaders
      */
-    public static function stream($fileName, $content, $additionalHeaders = [])
+    public static function stream(string $fileName, string $content, array $additionalHeaders = []): void
     {
         foreach ($additionalHeaders as $type => $value) {
             header($type . ': ' . $value);

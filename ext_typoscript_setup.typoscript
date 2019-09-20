@@ -1,0 +1,6 @@
+config.pageTitleProviders {
+    viewhelper {
+        provider = Keizer\KoningLibrary\PageTitle\ViewHelperPageTitleProvider
+        before = altPageTitle
+    }
+}

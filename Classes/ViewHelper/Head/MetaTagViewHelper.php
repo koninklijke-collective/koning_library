@@ -2,15 +2,16 @@
 
 namespace Keizer\KoningLibrary\ViewHelper\Head;
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper to render meta tags
  */
 class MetaTagViewHelper extends AbstractTagBasedViewHelper
 {
-
     /**
      * Used tag name
      *
@@ -25,6 +26,20 @@ class MetaTagViewHelper extends AbstractTagBasedViewHelper
      */
     public function initializeArguments()
     {
+        $this->registerArgument(
+            'useCurrentDomain',
+            'boolean',
+            'If set, current domain is used as src',
+            false,
+            false
+        );
+        $this->registerArgument(
+            'forceAbsoluteUrl',
+            'boolean',
+            'If set, absolute url is forced',
+            false,
+            false
+        );
         $this->registerTagAttribute('name', 'string', 'Name of meta tag');
         $this->registerTagAttribute('property', 'string', 'Property of meta tag');
         $this->registerTagAttribute('content', 'string', 'Content of meta tag');
@@ -33,29 +48,28 @@ class MetaTagViewHelper extends AbstractTagBasedViewHelper
     /**
      * Renders a meta tag
      *
-     * @param  boolean  $useCurrentDomain  If set, current domain is used
-     * @param  boolean  $forceAbsoluteUrl  If set, absolute url is forced
      * @return void
      */
-    public function render($useCurrentDomain = false, $forceAbsoluteUrl = false)
+    public function render()
     {
+        $arguments = $this->arguments;
         // set current domain
-        if ($useCurrentDomain) {
+        if ($arguments['useCurrentDomain']) {
             $this->tag->addAttribute('content', GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
         }
 
         // prepend current domain
-        if ($forceAbsoluteUrl) {
-            $path = $this->arguments['content'];
+        if ($arguments['forceAbsoluteUrl']) {
+            $path = $arguments['content'];
             if (!GeneralUtility::isFirstPartOfStr($path, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
                 $this->tag->addAttribute(
                     'content',
-                    GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($this->arguments['content'], '/')
+                    GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($arguments['content'], '/')
                 );
             }
         }
 
-        if ($useCurrentDomain || (isset($this->arguments['content']) && !empty($this->arguments['content']))) {
+        if ($arguments['useCurrentDomain'] || (isset($arguments['content']) && !empty($arguments['content']))) {
             $this->getPageRenderer()->addHeaderData($this->tag->render());
         }
     }
@@ -63,19 +77,15 @@ class MetaTagViewHelper extends AbstractTagBasedViewHelper
     /**
      * @return \TYPO3\CMS\Core\Page\PageRenderer
      */
-    protected function getPageRenderer()
+    protected function getPageRenderer(): PageRenderer
     {
-        if ('FE' === TYPO3_MODE && is_callable([$this->getTypoScriptFrontendController(), 'getPageRenderer'])) {
-            return $this->getTypoScriptFrontendController()->getPageRenderer();
-        } else {
-            return GeneralUtility::makeInstance('TYPO3\CMS\Core\Page\PageRenderer');
-        }
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
-    protected function getTypoScriptFrontendController()
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }

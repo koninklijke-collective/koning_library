@@ -2,7 +2,12 @@
 
 namespace Keizer\KoningLibrary\ViewHelper\Head;
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use Closure;
+use Keizer\KoningLibrary\PageTitle\ViewHelperPageTitleProvider;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * ViewHelper for <title> tag
@@ -13,32 +18,28 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class TitleTagViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
 
     /**
-     * Override the title tag
+     * Default implementation of static rendering; useful API method if your ViewHelper
+     * when compiled is able to render itself statically to increase performance. This
+     * default implementation will simply delegate to the ViewHelperInvoker.
      *
+     * @param  array  $arguments
+     * @param  \Closure  $renderChildrenClosure
+     * @param  \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface  $renderingContext
      * @return void
      */
-    public function render()
-    {
-        if ('FE' === TYPO3_MODE) {
-            $content = $this->renderChildren();
-            if (!empty($content)) {
-                $content = trim($content);
-                if ($this->getTypoScriptFrontendController() !== null) {
-                    $this->getTypoScriptFrontendController()->indexedDocTitle = $content;
-                    $this->getTypoScriptFrontendController()->page['title'] = $content;
-                    $this->getTypoScriptFrontendController()->altPageTitle = $content;
-                }
-            }
-        }
-    }
+    public static function renderStatic(
+        array $arguments,
+        Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ): void {
+        $content = trim($renderChildrenClosure());
 
-    /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
+        if (!empty($content)) {
+            GeneralUtility::makeInstance(ViewHelperPageTitleProvider::class)
+                ->setTitle($content);
+        }
     }
 }
