@@ -24,7 +24,7 @@ class LinkTagViewHelper extends AbstractTagBasedViewHelper
      *
      * @return void
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'useCurrentDomain',

@@ -24,7 +24,7 @@ class MetaTagViewHelper extends AbstractTagBasedViewHelper
      *
      * @return void
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'useCurrentDomain',
@@ -50,7 +50,7 @@ class MetaTagViewHelper extends AbstractTagBasedViewHelper
      *
      * @return void
      */
-    public function render()
+    public function render(): void
     {
         $arguments = $this->arguments;
         // set current domain

@@ -17,7 +17,7 @@ class IfPropertyHasErrorViewHelper extends AbstractConditionViewHelper
     /**
      * Constructor
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
 
@@ -27,12 +27,14 @@ class IfPropertyHasErrorViewHelper extends AbstractConditionViewHelper
     /**
      * @param  array  $arguments
      * @param  \Closure  $renderChildrenClosure
-     * @param  RenderingContextInterface  $renderingContext
+     * @param  \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface  $renderingContext
      * @return mixed
      */
     public static function renderStatic(
-        array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+        array $arguments,
+        Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         if (static::propertyHasErrorInRequest($renderingContext, $arguments['property'])) {
             if (isset($arguments['then'])) {
                 return $arguments['then'];
@@ -68,14 +70,10 @@ class IfPropertyHasErrorViewHelper extends AbstractConditionViewHelper
         $controllerContext = $renderingContext->getControllerContext();
         $originalRequestMappingResults = $controllerContext->getRequest()->getOriginalRequestMappingResults();
         try {
-            $formObjectName = $renderingContext->getViewHelperVariableContainer()->get(
-                    CoreFormViewHelper::class,
-                    'formObjectName'
-                )
-                ?? $renderingContext->getViewHelperVariableContainer()->get(
-                    FormViewHelper::class,
-                    'formObjectName'
-                );
+            $formObjectName = $renderingContext->getViewHelperVariableContainer()
+                    ->get(CoreFormViewHelper::class, 'formObjectName')
+                ?? $renderingContext->getViewHelperVariableContainer()
+                    ->get(FormViewHelper::class, 'formObjectName');
 
             if (!empty($formObjectName)) {
                 return $originalRequestMappingResults
@@ -96,7 +94,7 @@ class IfPropertyHasErrorViewHelper extends AbstractConditionViewHelper
     /**
      * @param  array  $closures
      * @param  array  $conditionClosures
-     * @param  RenderingContextInterface  $renderingContext
+     * @param  \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface  $renderingContext
      * @return string
      * @see \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper::evaluateElseClosures
      */
