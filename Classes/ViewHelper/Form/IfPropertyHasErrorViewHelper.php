@@ -14,7 +14,6 @@ class IfPropertyHasErrorViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abst
      */
     public function __construct()
     {
-        parent::__construct();
         $this->registerArgument('property', 'string', 'Property to validate', true);
     }
 
