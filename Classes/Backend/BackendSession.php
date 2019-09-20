@@ -15,12 +15,13 @@ class BackendSession
     protected $backendUserAuthentication;
 
     /**
-     * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $backendUserAuthentication
+     * @param  \TYPO3\CMS\Core\Authentication\BackendUserAuthentication  $backendUserAuthentication
      * @return \Keizer\KoningLibrary\Backend\BackendSession
      */
     public function setBackendUserAuthentication(BackendUserAuthentication $backendUserAuthentication)
     {
         $this->backendUserAuthentication = $backendUserAuthentication;
+
         return $this;
     }
 
@@ -35,8 +36,8 @@ class BackendSession
     /**
      * Creates a session if it does not exist yet
      *
-     * @param string $key
-     * @param mixed $contents
+     * @param  string  $key
+     * @param  mixed  $contents
      * @return void
      */
     public function createSession($key, $contents = null)
@@ -49,8 +50,8 @@ class BackendSession
     /**
      * Save the provided array into the session
      *
-     * @param string $key
-     * @param array $sessionArray
+     * @param  string  $key
+     * @param  array  $sessionArray
      * @return void
      */
     protected function saveSessionData($key, array $sessionArray)
@@ -61,7 +62,7 @@ class BackendSession
     /**
      * Returns the session contents
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     public function getSessionContents($key)
@@ -73,14 +74,15 @@ class BackendSession
                 return $unserializeData['contents'];
             }
         }
+
         return false;
     }
 
     /**
      * Saves the provided contents into the session
      *
-     * @param string $key
-     * @param mixed $contents
+     * @param  string  $key
+     * @param  mixed  $contents
      * @return void
      */
     public function saveSessionContents($key, $contents)

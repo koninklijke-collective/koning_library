@@ -49,7 +49,7 @@ abstract class AbstractModuleController extends AbstractActionController
      * This is needed to correctly handle typoscript setup
      *
      * @see https://forge.typo3.org/issues/73367
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
+     * @param  \TYPO3\CMS\Extbase\Mvc\View\ViewInterface  $view
      * @return void
      */
     protected function setViewConfiguration(ViewInterface $view)
@@ -78,19 +78,20 @@ abstract class AbstractModuleController extends AbstractActionController
             'controllerName' => $this->request->getControllerName(),
             'actionName' => $this->request->getControllerActionName(),
         ]);
+
         return $view;
     }
 
     /**
      * Set up the doc header properly here
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
+     * @param  \TYPO3\CMS\Extbase\Mvc\View\ViewInterface  $view
      * @return void
      */
     protected function initializeView(ViewInterface $view)
     {
         parent::initializeView($view);
-        if ($view instanceof \TYPO3\CMS\Backend\View\BackendTemplateView) {
+        if ($view instanceof BackendTemplateView) {
             // Disable Path
             $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
             $view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
@@ -100,15 +101,16 @@ abstract class AbstractModuleController extends AbstractActionController
     /**
      * Creates the URI for a backend action
      *
-     * @param string $controller
-     * @param string $action
-     * @param array $parameters
+     * @param  string  $controller
+     * @param  string  $action
+     * @param  array  $parameters
      * @return string
      */
     protected function getHref($controller, $action, $parameters = [])
     {
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
+
         return $uriBuilder->reset()->uriFor($action, $parameters, $controller);
     }
 }

@@ -2,6 +2,17 @@
 
 namespace Keizer\KoningLibrary\Utility;
 
+use Exception;
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageGenerator;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+
 /**
  * Utility: AJAX EID interaction
  */
@@ -11,7 +22,7 @@ class EidUtility
     /**
      * Initialize full GLOBALS[TSFE] based on given page id
      *
-     * @param integer $pageId
+     * @param  integer  $pageId
      * @return void
      */
     public static function initializeFrontendPage($pageId = 0)
@@ -20,18 +31,18 @@ class EidUtility
         static::initializeFrontendUserAuthentication();
 
         $controller = &$GLOBALS['TSFE'];
-        if (!($controller->sys_page instanceof \TYPO3\CMS\Frontend\Page\PageRepository)) {
+        if (!($controller->sys_page instanceof PageRepository)) {
             $controller->determineId();
         }
 
-        if (!($controller->tmpl instanceof \TYPO3\CMS\Core\TypoScript\TemplateService)) {
+        if (!($controller->tmpl instanceof TemplateService)) {
             $controller->initTemplate();
         }
 
         if (empty($controller->config)) {
             try {
                 $controller->getConfigArray();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Do nothing
             }
         }
@@ -39,14 +50,14 @@ class EidUtility
         static::initializeContentObjectRenderer();
 
         if (empty($controller->indexedDocTitle) && is_callable('\TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit')) {
-            \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
+            PageGenerator::pagegenInit();
         }
     }
 
     /**
      * Initialize TSFE based on given page id
      *
-     * @param integer $pageId
+     * @param  integer  $pageId
      * @return void
      */
     public static function initializeTypoScriptFrontendController($pageId = 1)
@@ -55,12 +66,12 @@ class EidUtility
 
         // fallback for timetracker
         if (!is_object($GLOBALS['TT'])) {
-            $GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker();
+            $GLOBALS['TT'] = new NullTimeTracker();
         }
 
         $controller = &$GLOBALS['TSFE'];
-        if (!($controller instanceof \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController)) {
-            $controller = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        if (!($controller instanceof TypoScriptFrontendController)) {
+            $controller = GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
                 $TYPO3_CONF_VARS,
                 $pageId,
@@ -68,7 +79,7 @@ class EidUtility
             );
 
             // @TODO: deprecated workaround since 8/9
-            $bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
+            $bootstrap = Bootstrap::getInstance();
             if (is_callable([$bootstrap, 'loadExtensionTables'])) {
                 $bootstrap->loadExtensionTables();
             } elseif (is_callable([$bootstrap, 'loadCachedTca'])) {
@@ -85,7 +96,7 @@ class EidUtility
     public static function initializeFrontendUserAuthentication()
     {
         static::initializeTypoScriptFrontendController();
-        if (!($GLOBALS['TSFE']->fe_user instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication)) {
+        if (!($GLOBALS['TSFE']->fe_user instanceof FrontendUserAuthentication)) {
             $GLOBALS['TSFE']->initFEuser();
         }
     }
@@ -98,7 +109,7 @@ class EidUtility
     public static function initializeContentObjectRenderer()
     {
         static::initializeTypoScriptFrontendController();
-        if (!($GLOBALS['TSFE']->cObj instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer)) {
+        if (!($GLOBALS['TSFE']->cObj instanceof ContentObjectRenderer)) {
             $GLOBALS['TSFE']->newCObj();
         }
     }

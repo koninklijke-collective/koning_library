@@ -4,6 +4,7 @@ namespace Keizer\KoningLibrary\ViewHelper\Link;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * A view helper for creating links to TYPO3 pages.
@@ -25,7 +26,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
  *
  * @deprecated
  */
-class TypoLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class TypoLinkViewHelper extends AbstractViewHelper
 {
 
     /**
@@ -41,7 +42,7 @@ class TypoLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
     protected $contentObject;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @param  \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface  $configurationManager
      * @return void
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
@@ -64,8 +65,8 @@ class TypoLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
     /**
      * Render URL
      *
-     * @param string $parameter
-     * @param array $configuration
+     * @param  string  $parameter
+     * @param  array  $configuration
      * @return string Rendered page URI
      */
     public function render($parameter = null, $configuration = [])
@@ -79,6 +80,7 @@ class TypoLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
         }
 
         $content = $this->renderChildren();
+
         return $this->contentObject->typoLink($content, $typoLinkConfiguration);
     }
 }

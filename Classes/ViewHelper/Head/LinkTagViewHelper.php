@@ -2,12 +2,14 @@
 
 namespace Keizer\KoningLibrary\ViewHelper\Head;
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper to render link tags
  */
-class LinkTagViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class LinkTagViewHelper extends AbstractTagBasedViewHelper
 {
 
     /**
@@ -33,8 +35,8 @@ class LinkTagViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBase
     /**
      * Renders a script tag
      *
-     * @param boolean $useCurrentDomain If set, current domain is used
-     * @param boolean $forceAbsoluteUrl If set, absolute url is forced
+     * @param  boolean  $useCurrentDomain  If set, current domain is used
+     * @param  boolean  $forceAbsoluteUrl  If set, absolute url is forced
      * @return void
      */
     public function render($useCurrentDomain = false, $forceAbsoluteUrl = false)
@@ -68,7 +70,7 @@ class LinkTagViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBase
         if ('FE' === TYPO3_MODE && is_callable([$this->getTypoScriptFrontendController(), 'getPageRenderer'])) {
             return $this->getTypoScriptFrontendController()->getPageRenderer();
         } else {
-            return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+            return GeneralUtility::makeInstance(PageRenderer::class);
         }
     }
 

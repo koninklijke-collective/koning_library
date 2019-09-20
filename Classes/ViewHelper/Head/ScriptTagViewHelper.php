@@ -3,11 +3,12 @@
 namespace Keizer\KoningLibrary\ViewHelper\Head;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper to render <script> tags
  */
-class ScriptTagViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class ScriptTagViewHelper extends AbstractTagBasedViewHelper
 {
 
     /**
@@ -31,9 +32,9 @@ class ScriptTagViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBa
     /**
      * Renders a script tag
      *
-     * @param boolean $useCurrentDomain If set, current domain is used
-     * @param boolean $forceAbsoluteUrl If set, absolute url is forced
-     * @param boolean $addToFooter
+     * @param  boolean  $useCurrentDomain  If set, current domain is used
+     * @param  boolean  $forceAbsoluteUrl  If set, absolute url is forced
+     * @param  boolean  $addToFooter
      * @return void
      */
     public function render($useCurrentDomain = false, $forceAbsoluteUrl = false, $addToFooter = false)

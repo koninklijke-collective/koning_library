@@ -2,6 +2,7 @@
 
 namespace Keizer\KoningLibrary\ViewHelper\Social;
 
+use Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -37,8 +38,8 @@ class TwitterCardViewHelper extends AbstractViewHelper
      *
      * @see https://dev.twitter.com/cards/types/summary Card, site, title and description are required properties.
      * @see https://dev.twitter.com/cards/markup Full list of supported properties:
-     * @param string $title
-     * @param string $description
+     * @param  string  $title
+     * @param  string  $description
      */
     public function render($title, $description)
     {
@@ -56,7 +57,7 @@ class TwitterCardViewHelper extends AbstractViewHelper
                     if ($image instanceof File && $image->getProperty('width') > 280) {
                         $card = 'summary_large_image';
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                 }
             }
 
@@ -68,26 +69,35 @@ class TwitterCardViewHelper extends AbstractViewHelper
             if ($this->getPageRenderer() !== null) {
                 // Add default required fields
                 $this->getPageRenderer()->addHeaderData('<meta name="twitter:card" content="' . $card . '">');
-                $this->getPageRenderer()->addHeaderData('<meta name="twitter:site" content="' . $this->getArgument('site') . '">');
+                $this->getPageRenderer()
+                    ->addHeaderData('<meta name="twitter:site" content="' . $this->getArgument('site') . '">');
                 $this->getPageRenderer()->addHeaderData('<meta name="twitter:title" content="' . $title . '">');
-                $this->getPageRenderer()->addHeaderData('<meta name="twitter:description" content="' . $description . '">');
+                $this->getPageRenderer()
+                    ->addHeaderData('<meta name="twitter:description" content="' . $description . '">');
 
                 if ($image instanceof File) {
                     $imageUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($image->getPublicUrl(), '/');
 
                     $this->getPageRenderer()->addHeaderData('<meta name="twitter:image" content="' . $imageUrl . '">');
-                    $this->getPageRenderer()->addHeaderData('<meta name="twitter:image:width" content="' . $image->getProperty('width') . '">');
-                    $this->getPageRenderer()->addHeaderData('<meta name="twitter:image:height" content="' . $image->getProperty('height') . '">');
+                    $this->getPageRenderer()
+                        ->addHeaderData('<meta name="twitter:image:width" content="' . $image->getProperty('width') . '">');
+                    $this->getPageRenderer()
+                        ->addHeaderData('<meta name="twitter:image:height" content="' . $image->getProperty('height') . '">');
                 }
 
                 if ($this->getArgument('player')) {
-                    $this->getPageRenderer()->addHeaderData('<meta name="twitter:player" content="' . $this->getArgument('player') . '">');
-                    $this->getPageRenderer()->addHeaderData('<meta name="twitter:player:width" content="' . $this->getArgument('playerWidth') . '">');
-                    $this->getPageRenderer()->addHeaderData('<meta name="twitter:player:height" content="' . $this->getArgument('playerHeight') . '">');
+                    $this->getPageRenderer()
+                        ->addHeaderData('<meta name="twitter:player" content="' . $this->getArgument('player') . '">');
+                    $this->getPageRenderer()
+                        ->addHeaderData('<meta name="twitter:player:width" content="' . $this->getArgument('playerWidth') . '">');
+                    $this->getPageRenderer()
+                        ->addHeaderData('<meta name="twitter:player:height" content="' . $this->getArgument('playerHeight') . '">');
 
                     if ($this->getArgument('stream')) {
-                        $this->getPageRenderer()->addHeaderData('<meta name="twitter:player:stream" content="' . $this->getArgument('stream') . '">');
-                        $this->getPageRenderer()->addHeaderData('<meta name="twitter:player:stream:content_type" content="' . $this->getArgument('streamType') . '">');
+                        $this->getPageRenderer()
+                            ->addHeaderData('<meta name="twitter:player:stream" content="' . $this->getArgument('stream') . '">');
+                        $this->getPageRenderer()
+                            ->addHeaderData('<meta name="twitter:player:stream:content_type" content="' . $this->getArgument('streamType') . '">');
                     }
                 }
             }
@@ -97,7 +107,7 @@ class TwitterCardViewHelper extends AbstractViewHelper
     /**
      * Get argument based on key
      *
-     * @param string $key
+     * @param  string  $key
      * @return string
      */
     protected function getArgument($key)

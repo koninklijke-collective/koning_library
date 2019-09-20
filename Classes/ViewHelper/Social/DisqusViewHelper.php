@@ -25,19 +25,18 @@ class DisqusViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
     /**
      * Render disqus thread
      *
-     * @param integer|string $uid
-     * @param string $title
-     * @param string $shortName
-     * @param string $link
+     * @param  integer|string  $uid
+     * @param  string  $title
+     * @param  string  $shortName
+     * @param  string  $link
      * @return string
      */
     public function render($uid, $title, $shortName, $link)
     {
         $code = '<script type="text/javascript">
                     var disqus_shortname = ' . GeneralUtility::quoteJSvalue($shortName, true) . ';
-                    var disqus_identifier = \'article_' . $uid . '\';
-                    var disqus_url = ' . GeneralUtility::quoteJSvalue($link, true) . ';
-                    var disqus_title = ' . GeneralUtility::quoteJSvalue($title, true) . ';
+                    var disqus_identifier = \'article_' . $uid . ' . GeneralUtility::quoteJSvalue($link, true) . ';
+                    var disqus_title =; ' . GeneralUtility::quoteJSvalue($title, true) . ';
 
                     (function() {
                         var dsq = document.createElement("script"); dsq.type = "text/javascript"; dsq.async = true;

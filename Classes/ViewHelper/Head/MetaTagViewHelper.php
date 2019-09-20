@@ -3,11 +3,12 @@
 namespace Keizer\KoningLibrary\ViewHelper\Head;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper to render meta tags
  */
-class MetaTagViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class MetaTagViewHelper extends AbstractTagBasedViewHelper
 {
 
     /**
@@ -32,8 +33,8 @@ class MetaTagViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBase
     /**
      * Renders a meta tag
      *
-     * @param boolean $useCurrentDomain If set, current domain is used
-     * @param boolean $forceAbsoluteUrl If set, absolute url is forced
+     * @param  boolean  $useCurrentDomain  If set, current domain is used
+     * @param  boolean  $forceAbsoluteUrl  If set, absolute url is forced
      * @return void
      */
     public function render($useCurrentDomain = false, $forceAbsoluteUrl = false)

@@ -21,13 +21,14 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
     /**
      * Translate mapping for <ext>/Resources/Private/Language/locallang.xlf
      *
-     * @param string $key
-     * @param array $arguments
+     * @param  string  $key
+     * @param  array  $arguments
      * @return string
      */
     protected function translate($key, $arguments = null)
     {
         $translation = LocalizationUtility::translate($key, $this->extensionName, $arguments);
+
         return (!empty($translation) ? $translation : $key);
     }
 
@@ -39,6 +40,7 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
         if ($this->pageRenderer === null) {
             $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         }
+
         return $this->pageRenderer;
     }
 
@@ -50,6 +52,7 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
         if ($this->objectManager === null) {
             $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         }
+
         return $this->objectManager;
     }
 }

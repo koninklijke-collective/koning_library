@@ -2,6 +2,9 @@
 
 namespace Keizer\KoningLibrary\ViewHelper;
 
+use Keizer\KoningLibrary\Utility\ResourceUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Retrieve reference details from given content
  * = Examples =
@@ -11,7 +14,7 @@ namespace Keizer\KoningLibrary\ViewHelper;
  * </l:reference>
  * </code>
  */
-class ReferenceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class ReferenceViewHelper extends AbstractViewHelper
 {
 
     /**
@@ -20,15 +23,15 @@ class ReferenceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
     protected $escapeOutput = false;
 
     /**
-     * @param integer $uid
-     * @param string $table
-     * @param string $field
-     * @param string $as
+     * @param  integer  $uid
+     * @param  string  $table
+     * @param  string  $field
+     * @param  string  $as
      * @return string path to the image
      */
     public function render($uid, $table = 'tt_content', $field = 'image', $as = 'references')
     {
-        $references = \Keizer\KoningLibrary\Utility\ResourceUtility::getReferenceObjects($uid, $table, $field);
+        $references = ResourceUtility::getReferenceObjects($uid, $table, $field);
         $this->templateVariableContainer->add($as, $references);
         $content = $this->renderChildren();
         $this->templateVariableContainer->remove($as);

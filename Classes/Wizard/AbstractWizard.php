@@ -2,6 +2,7 @@
 
 namespace Keizer\KoningLibrary\Wizard;
 
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -10,7 +11,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @deprecated
  */
-abstract class AbstractWizard implements \TYPO3\CMS\Core\SingletonInterface
+abstract class AbstractWizard implements SingletonInterface
 {
 
     /**
@@ -31,19 +32,20 @@ abstract class AbstractWizard implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Get configured label from localisation
      *
-     * @param string $identifier
+     * @param  string  $identifier
      * @return string
      */
     protected function getLabel($identifier)
     {
         $label = $this->getLanguageService()->getLLL($identifier, $this->getLocalisation());
+
         return ($label) ? $label : $identifier;
     }
 
     /**
      * Get icon from resource public folder
      *
-     * @param string $filename
+     * @param  string  $filename
      * @return string
      */
     protected function getIcon($filename)
@@ -60,6 +62,7 @@ abstract class AbstractWizard implements \TYPO3\CMS\Core\SingletonInterface
             $llFile = GeneralUtility::getFileAbsFileName('EXT:' . $this->extensionName . '/' . $this->localisationFile);
             $this->localisation = $this->getLanguageService()->includeLLFile($llFile, false, true);
         }
+
         return $this->localisation;
     }
 
@@ -74,7 +77,7 @@ abstract class AbstractWizard implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Processing the wizard items array
      *
-     * @param array $wizardItems : The wizard items
+     * @param  array  $wizardItems  : The wizard items
      * @return array Modified array with wizard items
      */
     abstract public function proc($wizardItems);

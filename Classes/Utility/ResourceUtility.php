@@ -2,6 +2,11 @@
 
 namespace Keizer\KoningLibrary\Utility;
 
+use Exception;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+
 /**
  * Utility: Resource download
  */
@@ -11,9 +16,9 @@ class ResourceUtility
     /**
      * Try to retrieve all reference objects
      *
-     * @param integer $uid
-     * @param string $table
-     * @param string $field
+     * @param  integer  $uid
+     * @param  string  $table
+     * @param  string  $field
      * @return array<\TYPO3\CMS\Core\Resource\FileReference>
      */
     public static function getReferenceObjects($uid, $table, $field)
@@ -28,8 +33,8 @@ class ResourceUtility
             'tablenames = ' . $database->fullQuoteStr($table, 'sys_file_reference')
             . ' AND fieldname=' . $database->fullQuoteStr($field, 'sys_file_reference')
             . ' AND uid_foreign=' . intval($uid)
-            . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_file_reference')
-            . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('sys_file_reference')
+            . BackendUtility::deleteClause('sys_file_reference')
+            . BackendUtility::versioningPlaceholderClause('sys_file_reference')
         );
 
         if (!empty($references)) {
@@ -37,24 +42,26 @@ class ResourceUtility
                 $referenceUid = (int)$reference['uid'];
                 if ($referenceUid > 0) {
                     try {
-                        $referenceObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($referenceUid);
-                        if ($referenceObject instanceof \TYPO3\CMS\Core\Resource\FileReference) {
+                        $referenceObject = ResourceFactory::getInstance()
+                            ->getFileReferenceObject($referenceUid);
+                        if ($referenceObject instanceof FileReference) {
                             $fileReferenceObjects[] = $referenceObject;
                         }
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                     }
                 }
             }
         }
+
         return $fileReferenceObjects;
     }
 
     /**
      * Stream context to view and stop processing
      *
-     * @param string $fileName
-     * @param string $content
-     * @param array $additionalHeaders
+     * @param  string  $fileName
+     * @param  string  $content
+     * @param  array  $additionalHeaders
      */
     public static function stream($fileName, $content, $additionalHeaders = [])
     {

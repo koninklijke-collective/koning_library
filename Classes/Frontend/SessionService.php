@@ -19,8 +19,8 @@ class SessionService
     /**
      * Get the object from the session. Create new one if it does not exist yet
      *
-     * @param string $sessionKey
-     * @param string $sessionObject
+     * @param  string  $sessionKey
+     * @param  string  $sessionObject
      * @return \Keizer\KoningLibrary\Domain\Session\SessionInterface
      */
     public function getSession($sessionKey, $sessionObject)
@@ -29,18 +29,20 @@ class SessionService
         if ($sessionData === null) {
             $newObject = GeneralUtility::makeInstance($sessionObject);
             $this->saveSessionData($sessionKey, ['sessionObject' => $newObject]);
+
             return $newObject;
         }
 
         $sessionData = unserialize($sessionData);
+
         return $sessionData['sessionObject'];
     }
 
     /**
      * Save the specified object into the session
      *
-     * @param string $key
-     * @param \Keizer\KoningLibrary\Domain\Session\SessionInterface $session
+     * @param  string  $key
+     * @param  \Keizer\KoningLibrary\Domain\Session\SessionInterface  $session
      * @return void
      */
     public function saveSession($key, SessionInterface $session)
@@ -51,8 +53,8 @@ class SessionService
     /**
      * Save the specified array into the session
      *
-     * @param string $key
-     * @param array $session
+     * @param  string  $key
+     * @param  array  $session
      * @return void
      */
     protected function saveSessionData($key, array $session)
@@ -81,6 +83,7 @@ class SessionService
                 $this->frontendUserAuthentication = EidUtility::initFeUser();
             }
         }
+
         return $this->frontendUserAuthentication;
     }
 }

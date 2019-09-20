@@ -2,6 +2,8 @@
 
 namespace Keizer\KoningLibrary\ViewHelper\Head;
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * ViewHelper for <title> tag
  * == Example ==
@@ -9,7 +11,7 @@ namespace Keizer\KoningLibrary\ViewHelper\Head;
  * == Result ==
  * Sets the title of the news record as title tag
  */
-class TitleTagViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class TitleTagViewHelper extends AbstractViewHelper
 {
 
     /**
