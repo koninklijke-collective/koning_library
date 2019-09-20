@@ -19,7 +19,7 @@ $EM_CONF[$_EXTKEY] = [
     ],
     'autoload' => [
         'psr-4' => [
-            'Keizer\\KoningLibrary\\' => 'Classes'
-        ]
+            'Keizer\\KoningLibrary\\' => 'Classes',
+        ],
     ],
 ];

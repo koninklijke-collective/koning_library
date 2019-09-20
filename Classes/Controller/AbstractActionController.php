@@ -1,4 +1,5 @@
 <?php
+
 namespace Keizer\KoningLibrary\Controller;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -8,8 +9,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Controller: Abstract Action
- *
- * @package Keizer\KoningLibrary\Controller
  */
 abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
@@ -53,5 +52,4 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
         }
         return $this->objectManager;
     }
-
 }

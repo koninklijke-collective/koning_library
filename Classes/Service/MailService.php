@@ -1,10 +1,9 @@
 <?php
+
 namespace Keizer\KoningLibrary\Service;
 
 /**
  * Service: Mail
- *
- * @package Keizer\KoningLibrary\Service
  */
 class MailService implements \TYPO3\CMS\Core\SingletonInterface
 {
@@ -33,7 +32,7 @@ class MailService implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param string $templateRootPaths
-     * @return MailService
+     * @return \Keizer\KoningLibrary\Service\MailService
      */
     public function setTemplateRootPaths($templateRootPaths)
     {
@@ -43,7 +42,7 @@ class MailService implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param string $layoutRootPaths
-     * @return MailService
+     * @return \Keizer\KoningLibrary\Service\MailService
      */
     public function setLayoutRootPaths($layoutRootPaths)
     {
@@ -53,7 +52,7 @@ class MailService implements \TYPO3\CMS\Core\SingletonInterface
 
     /**
      * @param array $partialRootPaths
-     * @return MailService
+     * @return \Keizer\KoningLibrary\Service\MailService
      */
     public function setPartialRootPaths($partialRootPaths)
     {

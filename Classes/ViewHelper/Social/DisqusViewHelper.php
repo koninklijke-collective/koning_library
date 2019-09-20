@@ -1,4 +1,5 @@
 <?php
+
 namespace Keizer\KoningLibrary\ViewHelper\Social;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -12,8 +13,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * <n:social.disqus newsItem="{newsItem}"
  *         shortName="demo123"
  *         link="{n:link(newsItem:newsItem,settings:settings,uriOnly:1)}" />
- *
- * @package Keizer\KoningLibrary\ViewHelper\Social
  */
 class DisqusViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {

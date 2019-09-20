@@ -1,4 +1,5 @@
 <?php
+
 namespace Keizer\KoningLibrary\ViewHelper\Link;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -22,7 +23,6 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
  * (depending on your TS configuration)
  * </output>
  *
- * @package Keizer\KoningLibrary\ViewHelper\Link
  * @deprecated
  */
 class TypoLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
@@ -31,7 +31,7 @@ class TypoLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
     /**
      * Configuration Manager
      *
-     * @var ConfigurationManagerInterface
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
     protected $configurationManager;
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Keizer\KoningLibrary\ViewHelper;
 
 /**
@@ -9,8 +10,6 @@ namespace Keizer\KoningLibrary\ViewHelper;
  *      {references -> f:debug}
  * </l:reference>
  * </code>
- *
- * @package Keizer\KoningLibrary\ViewHelper\Head
  */
 class ReferenceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {

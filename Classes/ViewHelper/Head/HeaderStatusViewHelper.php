@@ -1,12 +1,11 @@
 <?php
+
 namespace Keizer\KoningLibrary\ViewHelper\Head;
 
 /**
  * ViewHelper for header status codes
  * Example
  * <n:head.headerStatus status="404" />
- *
- * @package Keizer\KoningLibrary\ViewHelper\Head
  */
 class HeaderStatusViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {

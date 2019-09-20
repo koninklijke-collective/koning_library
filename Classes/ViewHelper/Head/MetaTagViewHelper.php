@@ -1,12 +1,11 @@
 <?php
+
 namespace Keizer\KoningLibrary\ViewHelper\Head;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ViewHelper to render meta tags
- *
- * @package Keizer\KoningLibrary\ViewHelper\Head
  */
 class MetaTagViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {

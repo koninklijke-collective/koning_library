@@ -1,10 +1,9 @@
 <?php
+
 namespace Keizer\KoningLibrary\ViewHelper\Head;
 
 /**
  * ViewHelper: Render <head> data, based on typoscript configuration
- *
- * @package Keizer\KoningLibrary\ViewHelper\Head
  */
 class HeaderDataViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {

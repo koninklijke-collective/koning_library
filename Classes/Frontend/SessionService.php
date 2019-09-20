@@ -1,20 +1,18 @@
 <?php
+
 namespace Keizer\KoningLibrary\Frontend;
 
 use Keizer\KoningLibrary\Domain\Session\SessionInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Utility\EidUtility;
 
 /**
  * Frontend session wrapper
- *
- * @package Keizer\KoningLibrary\Frontend
  */
 class SessionService
 {
     /**
-     * @var FrontendUserAuthentication
+     * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
      */
     protected $frontendUserAuthentication;
 
@@ -23,7 +21,7 @@ class SessionService
      *
      * @param string $sessionKey
      * @param string $sessionObject
-     * @return SessionInterface
+     * @return \Keizer\KoningLibrary\Domain\Session\SessionInterface
      */
     public function getSession($sessionKey, $sessionObject)
     {
@@ -42,7 +40,7 @@ class SessionService
      * Save the specified object into the session
      *
      * @param string $key
-     * @param SessionInterface $session
+     * @param \Keizer\KoningLibrary\Domain\Session\SessionInterface $session
      * @return void
      */
     public function saveSession($key, SessionInterface $session)
@@ -72,7 +70,7 @@ class SessionService
     }
 
     /**
-     * @return FrontendUserAuthentication
+     * @return \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
      */
     protected function getFrontendUserAuthentication()
     {

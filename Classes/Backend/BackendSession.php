@@ -1,23 +1,22 @@
 <?php
+
 namespace Keizer\KoningLibrary\Backend;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
  * Backend session wrapper
- *
- * @package Keizer\KoningLibrary\Backend
  */
 class BackendSession
 {
     /**
-     * @var BackendUserAuthentication
+     * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
     protected $backendUserAuthentication;
 
     /**
-     * @param BackendUserAuthentication $backendUserAuthentication
-     * @return BackendSession
+     * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $backendUserAuthentication
+     * @return \Keizer\KoningLibrary\Backend\BackendSession
      */
     public function setBackendUserAuthentication(BackendUserAuthentication $backendUserAuthentication)
     {
@@ -26,7 +25,7 @@ class BackendSession
     }
 
     /**
-     * @return BackendUserAuthentication
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
      */
     protected function getBackendUserAuthentication()
     {

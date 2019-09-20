@@ -1,4 +1,5 @@
 <?php
+
 namespace Keizer\KoningLibrary\ViewHelper\Social;
 
 use TYPO3\CMS\Core\Resource\File;
@@ -7,8 +8,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to render twitter summary cards.
- *
- * @package Keizer\KoningLibrary\ViewHelper\Social
  */
 class TwitterCardViewHelper extends AbstractViewHelper
 {

@@ -1,10 +1,9 @@
 <?php
+
 namespace Keizer\KoningLibrary\Utility;
 
 /**
  * Utility: AJAX EID interaction
- *
- * @package Keizer\KoningLibrary\Utility
  */
 class EidUtility
 {
@@ -103,5 +102,4 @@ class EidUtility
             $GLOBALS['TSFE']->newCObj();
         }
     }
-
 }

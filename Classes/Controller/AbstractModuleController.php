@@ -1,4 +1,5 @@
 <?php
+
 namespace Keizer\KoningLibrary\Controller;
 
 use TYPO3\CMS\Backend\View\BackendTemplateView;
@@ -7,8 +8,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
  * Controller: Abstract Module Action
- *
- * @package Keizer\KoningLibrary\Controller
  */
 abstract class AbstractModuleController extends AbstractActionController
 {
@@ -19,7 +18,7 @@ abstract class AbstractModuleController extends AbstractActionController
     protected $request;
 
     /**
-     * @var BackendTemplateView
+     * @var \TYPO3\CMS\Backend\View\BackendTemplateView
      */
     protected $view;
 
@@ -50,7 +49,7 @@ abstract class AbstractModuleController extends AbstractActionController
      * This is needed to correctly handle typoscript setup
      *
      * @see https://forge.typo3.org/issues/73367
-     * @param ViewInterface $view
+     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
      * @return void
      */
     protected function setViewConfiguration(ViewInterface $view)
@@ -69,7 +68,7 @@ abstract class AbstractModuleController extends AbstractActionController
      * Resolve view and initialize the general view-variables extensionName,
      * controllerName and actionName based on the request object
      *
-     * @return ViewInterface
+     * @return \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      */
     protected function resolveView()
     {
@@ -77,7 +76,7 @@ abstract class AbstractModuleController extends AbstractActionController
         $view->assignMultiple([
             'extensionName' => $this->request->getControllerExtensionName(),
             'controllerName' => $this->request->getControllerName(),
-            'actionName' => $this->request->getControllerActionName()
+            'actionName' => $this->request->getControllerActionName(),
         ]);
         return $view;
     }
@@ -85,7 +84,7 @@ abstract class AbstractModuleController extends AbstractActionController
     /**
      * Set up the doc header properly here
      *
-     * @param ViewInterface $view
+     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
      * @return void
      */
     protected function initializeView(ViewInterface $view)
@@ -112,5 +111,4 @@ abstract class AbstractModuleController extends AbstractActionController
         $uriBuilder->setRequest($this->request);
         return $uriBuilder->reset()->uriFor($action, $parameters, $controller);
     }
-
 }

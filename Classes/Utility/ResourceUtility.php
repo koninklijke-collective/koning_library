@@ -1,10 +1,9 @@
 <?php
+
 namespace Keizer\KoningLibrary\Utility;
 
 /**
  * Utility: Resource download
- *
- * @package Keizer\KoningLibrary\Utility
  */
 class ResourceUtility
 {

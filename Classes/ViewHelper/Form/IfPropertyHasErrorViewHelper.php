@@ -1,10 +1,10 @@
 <?php
+
 namespace Keizer\KoningLibrary\ViewHelper\Form;
 
 /**
  * View helper: If property has error
  *
- * @package Keizer\KoningLibrary\ViewHelpers\Form
  * @deprecated
  */
 class IfPropertyHasErrorViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper

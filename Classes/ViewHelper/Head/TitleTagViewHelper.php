@@ -1,4 +1,5 @@
 <?php
+
 namespace Keizer\KoningLibrary\ViewHelper\Head;
 
 /**
@@ -7,8 +8,6 @@ namespace Keizer\KoningLibrary\ViewHelper\Head;
  * <n:titleTag>{newsItem.title}</n:titleTag>
  * == Result ==
  * Sets the title of the news record as title tag
- *
- * @package Keizer\KoningLibrary\ViewHelper\Head
  */
 class TitleTagViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
