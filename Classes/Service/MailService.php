@@ -2,80 +2,82 @@
 
 namespace Keizer\KoningLibrary\Service;
 
+use Swift_Attachment;
+use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+
 /**
  * Service: Mail
  */
-class MailService implements \TYPO3\CMS\Core\SingletonInterface
+class MailService implements SingletonInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $templateRootPaths = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $layoutRootPaths = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $partialRootPaths = [];
 
     /**
-     * @return array
-     */
-    public function getTemplateRootPath()
-    {
-        return $this->templateRootPaths;
-    }
-
-    /**
-     * @param string $templateRootPaths
+     * @param  array  $templateRootPaths
      * @return \Keizer\KoningLibrary\Service\MailService
      */
-    public function setTemplateRootPaths($templateRootPaths)
+    public function setTemplateRootPaths(array $templateRootPaths): self
     {
         $this->templateRootPaths = $templateRootPaths;
+
         return $this;
     }
 
     /**
-     * @param string $layoutRootPaths
+     * @param  array  $layoutRootPaths
      * @return \Keizer\KoningLibrary\Service\MailService
      */
-    public function setLayoutRootPaths($layoutRootPaths)
+    public function setLayoutRootPaths(array $layoutRootPaths): self
     {
         $this->layoutRootPaths = $layoutRootPaths;
+
         return $this;
     }
 
     /**
-     * @param array $partialRootPaths
+     * @param  array  $partialRootPaths
      * @return \Keizer\KoningLibrary\Service\MailService
      */
-    public function setPartialRootPaths($partialRootPaths)
+    public function setPartialRootPaths(array $partialRootPaths): self
     {
         $this->partialRootPaths = $partialRootPaths;
+
         return $this;
     }
 
     /**
      * Send mail using a Fluid template
      *
-     * @param array $recipient
-     * @param array $sender
-     * @param string $subject
-     * @param string $templateName
-     * @param array $bcc
-     * @param array $variables
-     * @param array $attachments
+     * @param  array  $recipient
+     * @param  array  $sender
+     * @param  string  $subject
+     * @param  string  $templateName
+     * @param  array  $bcc
+     * @param  array  $variables
+     * @param  array  $attachments
      * @return boolean
      */
-    public function sendMail(array $recipient, array $sender, $subject, $templateName, array $bcc = [], array $variables = [], array $attachments = [])
-    {
+    public function sendMail(
+        array $recipient,
+        array $sender,
+        string $subject,
+        string $templateName,
+        array $bcc = [],
+        array $variables = [],
+        array $attachments = []
+    ): bool {
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
-        $emailView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+        $emailView = GeneralUtility::makeInstance(StandaloneView::class);
         $emailView->setFormat('html');
         $emailView->setLayoutRootPaths($this->layoutRootPaths);
         $emailView->setTemplateRootPaths($this->templateRootPaths);
@@ -84,7 +86,7 @@ class MailService implements \TYPO3\CMS\Core\SingletonInterface
         $emailView->assignMultiple($variables);
         $emailBody = $emailView->render();
 
-        $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+        $message = GeneralUtility::makeInstance(MailMessage::class);
         /** @var \TYPO3\CMS\Core\Mail\MailMessage $message */
         $message
             ->setTo($recipient)
@@ -93,7 +95,7 @@ class MailService implements \TYPO3\CMS\Core\SingletonInterface
             ->setSubject($subject);
 
         foreach ($attachments as $file) {
-            $attachment = \Swift_Attachment::fromPath($file);
+            $attachment = Swift_Attachment::fromPath($file);
             $message->attach($attachment);
         }
 
@@ -101,6 +103,7 @@ class MailService implements \TYPO3\CMS\Core\SingletonInterface
         $message->addPart(html_entity_decode(strip_tags($emailBody)), 'text/plain');
 
         $message->send();
+
         return $message->isSent();
     }
 }

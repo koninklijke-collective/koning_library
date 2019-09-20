@@ -2,47 +2,51 @@
 
 namespace Keizer\KoningLibrary\ViewHelper\Head;
 
+use Closure;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+
 /**
  * ViewHelper: Render <head> data, based on typoscript configuration
  */
-class HeaderDataViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class HeaderDataViewHelper extends AbstractTagBasedViewHelper
 {
+    use CompileWithRenderStatic;
 
     /**
      * Renders tag in header data
      *
-     * @param string $content
-     * @return void
+     * @param  array  $arguments
+     * @param  \Closure  $renderChildrenClosure
+     * @param  \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface  $renderingContext
      */
-    public function render($content = '')
-    {
-        if (empty($content)) {
-            $content = $this->renderChildren();
+    public static function renderStatic(
+        array $arguments,
+        Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ): void {
+        if (isset($arguments['content']) && !empty($arguments['content'])) {
+            $content = $arguments['content'];
+        } else {
+            $content = $renderChildrenClosure;
         }
-        $content = trim($content);
 
+        $content = trim($content);
         if (!empty($content)) {
-            $this->getPageRenderer()->addHeaderData($content);
+            static::getPageRenderer()->addHeaderData($content);
         }
+
+        return parent::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }
 
     /**
      * @return \TYPO3\CMS\Core\Page\PageRenderer
      */
-    protected function getPageRenderer()
+    protected static function getPageRenderer(): PageRenderer
     {
-        if ('FE' === TYPO3_MODE && is_callable([$this->getTypoScriptFrontendController(), 'getPageRenderer'])) {
-            return $this->getTypoScriptFrontendController()->getPageRenderer();
-        } else {
-            return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-        }
-    }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

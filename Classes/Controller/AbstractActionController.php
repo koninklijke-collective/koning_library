@@ -4,52 +4,51 @@ namespace Keizer\KoningLibrary\Controller;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Controller: Abstract Action
  */
-abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+abstract class AbstractActionController extends ActionController
 {
-
-    /**
-     * @var \TYPO3\CMS\Core\Page\PageRenderer
-     */
-    protected $pageRenderer;
-
     /**
      * Translate mapping for <ext>/Resources/Private/Language/locallang.xlf
      *
-     * @param string $key
-     * @param array $arguments
+     * @param  string  $key
+     * @param  array  $arguments
      * @return string
      */
-    protected function translate($key, $arguments = null)
+    protected function translate(string $key, ?array $arguments = null): string
     {
-        $translation = LocalizationUtility::translate($key, $this->extensionName, $arguments);
+        $translation = LocalizationUtility::translate(
+            $key,
+            $this->request->getControllerExtensionName(),
+            $arguments
+        );
+
         return (!empty($translation) ? $translation : $key);
     }
 
     /**
      * @return \TYPO3\CMS\Core\Page\PageRenderer
      */
-    protected function getPageRenderer()
+    protected function getPageRenderer(): PageRenderer
     {
-        if ($this->pageRenderer === null) {
-            $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        }
-        return $this->pageRenderer;
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**
      * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
-    protected function getObjectManager()
+    protected function getObjectManager(): ObjectManagerInterface
     {
         if ($this->objectManager === null) {
             $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         }
+
         return $this->objectManager;
     }
 }

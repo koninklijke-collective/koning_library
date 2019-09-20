@@ -2,6 +2,12 @@
 
 namespace Keizer\KoningLibrary\ViewHelper;
 
+use Closure;
+use Keizer\KoningLibrary\Utility\ResourceUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+
 /**
  * Retrieve reference details from given content
  * = Examples =
@@ -11,27 +17,68 @@ namespace Keizer\KoningLibrary\ViewHelper;
  * </l:reference>
  * </code>
  */
-class ReferenceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class ReferenceViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
 
-    /**
-     * @var boolean
-     */
+    /** @var boolean */
     protected $escapeOutput = false;
 
     /**
-     * @param integer $uid
-     * @param string $table
-     * @param string $field
-     * @param string $as
-     * @return string path to the image
+     * @return void
      */
-    public function render($uid, $table = 'tt_content', $field = 'image', $as = 'references')
+    public function initializeArguments(): void
     {
-        $references = \Keizer\KoningLibrary\Utility\ResourceUtility::getReferenceObjects($uid, $table, $field);
-        $this->templateVariableContainer->add($as, $references);
-        $content = $this->renderChildren();
-        $this->templateVariableContainer->remove($as);
+        $this->registerArgument(
+            'uid',
+            'integer',
+            'Id of table',
+            true
+        );
+        $this->registerArgument(
+            'table',
+            'string',
+            'Used table',
+            false,
+            'tt_content'
+        );
+        $this->registerArgument(
+            'field',
+            'string',
+            'Field column',
+            false,
+            'image'
+        );
+        $this->registerArgument(
+            'as',
+            'string',
+            'The name of the new registered variable',
+            false,
+            'references'
+        );
+    }
+
+    /**
+     * @param  array  $arguments
+     * @param  \Closure  $renderChildrenClosure
+     * @param  \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface  $renderingContext
+     * @return string
+     */
+    public static function renderStatic(
+        array $arguments,
+        Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ): string {
+        $variableProvider = $renderingContext->getVariableProvider();
+        $references = ResourceUtility::getReferenceObjects(
+            $arguments['uid'],
+            $arguments['table'],
+            $arguments['field']
+        );
+
+        $variableProvider->add($arguments['as'], $references);
+        $content = $renderChildrenClosure();
+        $variableProvider->remove($arguments['as']);
 
         return $content;
     }

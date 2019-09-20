@@ -11,20 +11,13 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
  */
 abstract class AbstractModuleController extends AbstractActionController
 {
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
-     */
+    /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request */
     protected $request;
 
-    /**
-     * @var \TYPO3\CMS\Backend\View\BackendTemplateView
-     */
+    /** @var \TYPO3\CMS\Backend\View\BackendTemplateView */
     protected $view;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $defaultViewObjectName = BackendTemplateView::class;
 
     /**
@@ -32,36 +25,14 @@ abstract class AbstractModuleController extends AbstractActionController
      *
      * @return void
      */
-    public function initializeAction()
+    public function initializeAction(): void
     {
         parent::initializeAction();
 
         // Load needed javascript libraries
-        $this->getPageRenderer()->loadExtJS();
-        $this->getPageRenderer()->loadJquery();
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Utility');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Notification');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-    }
-
-    /**
-     * Set up the view template configuration correctly for BackendTemplateView
-     * This is needed to correctly handle typoscript setup
-     *
-     * @see https://forge.typo3.org/issues/73367
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
-     * @return void
-     */
-    protected function setViewConfiguration(ViewInterface $view)
-    {
-        if (class_exists('\TYPO3\CMS\Backend\View\BackendTemplateView') && ($view instanceof \TYPO3\CMS\Backend\View\BackendTemplateView)) {
-            /** @var \TYPO3\CMS\Fluid\View\TemplateView $_view */
-            $_view = $this->getObjectManager()->get(\TYPO3\CMS\Fluid\View\TemplateView::class);
-            $this->setViewConfiguration($_view);
-            $view->injectTemplateView($_view);
-        } else {
-            parent::setViewConfiguration($view);
-        }
     }
 
     /**
@@ -70,7 +41,7 @@ abstract class AbstractModuleController extends AbstractActionController
      *
      * @return \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      */
-    protected function resolveView()
+    protected function resolveView(): ViewInterface
     {
         $view = parent::resolveView();
         $view->assignMultiple([
@@ -78,19 +49,20 @@ abstract class AbstractModuleController extends AbstractActionController
             'controllerName' => $this->request->getControllerName(),
             'actionName' => $this->request->getControllerActionName(),
         ]);
+
         return $view;
     }
 
     /**
      * Set up the doc header properly here
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
+     * @param  \TYPO3\CMS\Extbase\Mvc\View\ViewInterface  $view
      * @return void
      */
-    protected function initializeView(ViewInterface $view)
+    protected function initializeView(ViewInterface $view): void
     {
         parent::initializeView($view);
-        if ($view instanceof \TYPO3\CMS\Backend\View\BackendTemplateView) {
+        if ($view instanceof BackendTemplateView) {
             // Disable Path
             $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
             $view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
@@ -100,15 +72,16 @@ abstract class AbstractModuleController extends AbstractActionController
     /**
      * Creates the URI for a backend action
      *
-     * @param string $controller
-     * @param string $action
-     * @param array $parameters
+     * @param  string|null  $controller
+     * @param  string|null  $action
+     * @param  array|null  $parameters
      * @return string
      */
-    protected function getHref($controller, $action, $parameters = [])
+    protected function getHref(?string $controller, ?string $action, ?array $parameters = []): string
     {
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
+
         return $uriBuilder->reset()->uriFor($action, $parameters, $controller);
     }
 }

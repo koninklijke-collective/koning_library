@@ -2,12 +2,17 @@
 
 namespace Keizer\KoningLibrary\ViewHelper\Social;
 
+use Exception;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Seo\MetaTag\TwitterCardMetaTagManager;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to render twitter summary cards.
+ *
+ * @deprecated use ext:seo TwitterCard ViewHelper
  */
 class TwitterCardViewHelper extends AbstractViewHelper
 {
@@ -17,9 +22,11 @@ class TwitterCardViewHelper extends AbstractViewHelper
      *
      * @return void
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerArgument('site', 'string', 'Username', false, '@grandslam_media');
+        $this->registerArgument('title', 'string', 'Title', true);
+        $this->registerArgument('description', 'string', 'Description', true);
+        $this->registerArgument('site', 'string', 'Username', false, '@RSMErasmus');
 
         // Image attributes
         $this->registerArgument('image', 'string', 'Image', false, null);
@@ -37,10 +44,9 @@ class TwitterCardViewHelper extends AbstractViewHelper
      *
      * @see https://dev.twitter.com/cards/types/summary Card, site, title and description are required properties.
      * @see https://dev.twitter.com/cards/markup Full list of supported properties:
-     * @param string $title
-     * @param string $description
+     * @return void
      */
-    public function render($title, $description)
+    public function render(): void
     {
         // Only render ViewHelper in frontend
         if ('FE' === TYPO3_MODE) {
@@ -48,80 +54,65 @@ class TwitterCardViewHelper extends AbstractViewHelper
             $card = 'summary';
 
             $image = null;
-            if ($this->getArgument('image')) {
+            if (!empty($this->arguments['image'])) {
                 try {
-                    $resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-                    $image = $resourceFactory->getFileObjectFromCombinedIdentifier($this->getArgument('image'));
+                    $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+                    $image = $resourceFactory->getFileObjectFromCombinedIdentifier($this->arguments['image']);
 
                     if ($image instanceof File && $image->getProperty('width') > 280) {
                         $card = 'summary_large_image';
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                 }
             }
 
-            if ($this->getArgument('player')) {
+            if (!empty($this->arguments['player'])) {
                 $card = 'player';
             }
 
             // Add all attributes as meta tags
-            if ($this->getPageRenderer() !== null) {
-                // Add default required fields
-                $this->getPageRenderer()->addHeaderData('<meta name="twitter:card" content="' . $card . '">');
-                $this->getPageRenderer()->addHeaderData('<meta name="twitter:site" content="' . $this->getArgument('site') . '">');
-                $this->getPageRenderer()->addHeaderData('<meta name="twitter:title" content="' . $title . '">');
-                $this->getPageRenderer()->addHeaderData('<meta name="twitter:description" content="' . $description . '">');
+            $twitterCardTagManager = $this->getTwitterCardTagManager();
 
-                if ($image instanceof File) {
-                    $imageUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($image->getPublicUrl(), '/');
+            // Add default required fields
+            $twitterCardTagManager->addProperty('twitter:card', $card);
+            $twitterCardTagManager->addProperty('twitter:site', $this->arguments['site']);
+            $twitterCardTagManager->addProperty('twitter:title', $this->arguments['title']);
+            $twitterCardTagManager->addProperty('twitter:description', $this->arguments['description']);
 
-                    $this->getPageRenderer()->addHeaderData('<meta name="twitter:image" content="' . $imageUrl . '">');
-                    $this->getPageRenderer()->addHeaderData('<meta name="twitter:image:width" content="' . $image->getProperty('width') . '">');
-                    $this->getPageRenderer()->addHeaderData('<meta name="twitter:image:height" content="' . $image->getProperty('height') . '">');
+            if ($image instanceof File) {
+                $imageUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . ltrim($image->getPublicUrl(), '/');
+                $twitterCardTagManager->addProperty(
+                    'twitter:image',
+                    $imageUrl,
+                    ['width' => $image->getProperty('width'), 'height' => $image->getProperty('height')]
+                );
+            }
+
+            if (!empty($this->arguments['player'])) {
+                $subProperties = [
+                    'width' => $this->arguments['playerWidth'],
+                    'height' => $this->arguments['playerHeight'],
+                ];
+
+                if (!empty($this->arguments['stream'])) {
+                    $subProperties['stream'] = $this->arguments['stream'];
+                    $subProperties['stream:content_type'] = $this->arguments['streamType'];
                 }
 
-                if ($this->getArgument('player')) {
-                    $this->getPageRenderer()->addHeaderData('<meta name="twitter:player" content="' . $this->getArgument('player') . '">');
-                    $this->getPageRenderer()->addHeaderData('<meta name="twitter:player:width" content="' . $this->getArgument('playerWidth') . '">');
-                    $this->getPageRenderer()->addHeaderData('<meta name="twitter:player:height" content="' . $this->getArgument('playerHeight') . '">');
-
-                    if ($this->getArgument('stream')) {
-                        $this->getPageRenderer()->addHeaderData('<meta name="twitter:player:stream" content="' . $this->getArgument('stream') . '">');
-                        $this->getPageRenderer()->addHeaderData('<meta name="twitter:player:stream:content_type" content="' . $this->getArgument('streamType') . '">');
-                    }
-                }
+                $twitterCardTagManager->addProperty(
+                    'twitter:player',
+                    $this->arguments['player'],
+                    $subProperties
+                );
             }
         }
     }
 
     /**
-     * Get argument based on key
-     *
-     * @param string $key
-     * @return string
+     * @return \TYPO3\CMS\Seo\MetaTag\TwitterCardMetaTagManager
      */
-    protected function getArgument($key)
+    protected function getTwitterCardTagManager(): TwitterCardMetaTagManager
     {
-        return ((isset($this->arguments[$key]) && !empty($this->arguments[$key])) ? $this->arguments[$key] : null);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Page\PageRenderer
-     */
-    protected function getPageRenderer()
-    {
-        if ('FE' === TYPO3_MODE && is_callable([$this->getTypoScriptFrontendController(), 'getPageRenderer'])) {
-            return $this->getTypoScriptFrontendController()->getPageRenderer();
-        } else {
-            return GeneralUtility::makeInstance('TYPO3\CMS\Core\Page\PageRenderer');
-        }
-    }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
+        return GeneralUtility::makeInstance(TwitterCardMetaTagManager::class);
     }
 }

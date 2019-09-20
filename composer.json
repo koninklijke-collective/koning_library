@@ -17,8 +17,9 @@
             "Keizer\\KoningLibrary\\": "Classes/"
         }
     },
+
     "require": {
-        "typo3/cms-core": ">=8.7.0 <10.0.0"
+        "typo3/cms-core": ">=9.5.0 <10.0.0"
     },
 
     "authors": [
