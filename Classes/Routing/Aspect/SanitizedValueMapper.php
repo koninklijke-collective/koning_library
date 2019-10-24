@@ -39,6 +39,7 @@ final class SanitizedValueMapper implements PersistedMappableAspectInterface, St
 {
     use SiteLanguageAwareTrait;
 
+    /** @var MappableAspectInterface */
     protected $aspect;
 
     /** @var string */
