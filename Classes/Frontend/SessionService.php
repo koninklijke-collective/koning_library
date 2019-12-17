@@ -2,7 +2,6 @@
 
 namespace Keizer\KoningLibrary\Frontend;
 
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
@@ -23,8 +22,12 @@ class SessionService
      */
     public function getSession(string $key, $data)
     {
-        $sessionData = $this->getFrontendUserAuthentication()->getKey('ses', $data);
+        $sessionData = $this->getFrontendUserAuthentication()->getKey('ses', $key);
         if ($sessionData === null) {
+            /** @see \Keizer\KoningLibrary\Domain\Session\SessionInterface legacy fallback */
+            if (is_string($data) && class_exists($data)) {
+                $data = GeneralUtility::makeInstance($data);
+            }
             $this->saveSessionData($key, ['contents' => $data]);
 
             return $data;
@@ -66,8 +69,7 @@ class SessionService
     protected function getFrontendUserAuthentication(): FrontendUserAuthentication
     {
         if ($this->frontendUserAuthentication === null) {
-            $this->frontendUserAuthentication = GeneralUtility::makeInstance(Context::class)
-                ->getAspect('frontend.user');
+            $this->frontendUserAuthentication = $GLOBALS['TSFE']->fe_user;
         }
 
         return $this->frontendUserAuthentication;
