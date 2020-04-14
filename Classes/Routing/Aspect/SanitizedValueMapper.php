@@ -66,6 +66,9 @@ final class SanitizedValueMapper implements PersistedMappableAspectInterface, St
         try {
             $output = $this->getAspectFromRenderType()->generate($value);
 
+            // Do not allow slashes in slug
+            $output = str_replace('/', ' ', $output);
+
             return $this->getSlugHelper()->sanitize($output);
         } catch (\Exception $e) {
             return null;
