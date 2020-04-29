@@ -8,6 +8,7 @@ use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
 use TYPO3\CMS\Core\Routing\Aspect\MappableAspectInterface;
 use TYPO3\CMS\Core\Routing\Aspect\PersistedMappableAspectInterface;
+use TYPO3\CMS\Core\Routing\Aspect\SiteAccessorTrait;
 use TYPO3\CMS\Core\Routing\Aspect\StaticMappableAspectInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,6 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class SanitizedValueMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface
 {
     use SiteLanguageAwareTrait;
+    use SiteAccessorTrait;
 
     /** @var \TYPO3\CMS\Core\Routing\Aspect\MappableAspectInterface */
     protected $aspect;
@@ -101,7 +103,7 @@ final class SanitizedValueMapper implements PersistedMappableAspectInterface, St
             unset($configuration['renderType']);
 
             $aspects = GeneralUtility::makeInstance(AspectFactory::class)
-                ->createAspects([$configuration], $this->siteLanguage);
+                ->createAspects([$configuration], $this->siteLanguage, $this->getSite());
             $this->aspect = $aspects[0] ?? null;
         }
 
