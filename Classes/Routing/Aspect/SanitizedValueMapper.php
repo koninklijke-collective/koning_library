@@ -8,7 +8,9 @@ use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
 use TYPO3\CMS\Core\Routing\Aspect\MappableAspectInterface;
 use TYPO3\CMS\Core\Routing\Aspect\PersistedMappableAspectInterface;
+use TYPO3\CMS\Core\Routing\Aspect\SiteAccessorTrait;
 use TYPO3\CMS\Core\Routing\Aspect\StaticMappableAspectInterface;
+use TYPO3\CMS\Core\Site\SiteAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -35,8 +37,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @see https://forge.typo3.org/issues/86797 inspired to sanitize output based on generic rendered type
  */
-final class SanitizedValueMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface
+final class SanitizedValueMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, SiteAwareInterface
 {
+    use SiteAccessorTrait;
     use SiteLanguageAwareTrait;
 
     /** @var \TYPO3\CMS\Core\Routing\Aspect\MappableAspectInterface */
@@ -99,9 +102,9 @@ final class SanitizedValueMapper implements PersistedMappableAspectInterface, St
             $configuration = $this->configuration;
             $configuration['type'] = $configuration['renderType'];
             unset($configuration['renderType']);
-
-            $aspects = GeneralUtility::makeInstance(AspectFactory::class)
-                ->createAspects([$configuration], $this->siteLanguage);
+            /** @var \TYPO3\CMS\Core\Routing\Aspect\AspectFactory $aspectFactory */
+            $aspectFactory = GeneralUtility::makeInstance(AspectFactory::class);
+            $aspects = $aspectFactory->createAspects([$configuration], $this->siteLanguage, $this->site);
             $this->aspect = $aspects[0] ?? null;
         }
 
