@@ -21,7 +21,7 @@ class ReferenceViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /** @var boolean */
+    /** @var bool */
     protected $escapeOutput = false;
 
     /**

@@ -18,7 +18,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 class DisqusViewHelper extends AbstractViewHelper
 {
 
-    /** @var boolean */
+    /** @var bool */
     protected $escapeOutput = false;
 
     /**

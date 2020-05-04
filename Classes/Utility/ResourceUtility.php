@@ -17,7 +17,7 @@ class ResourceUtility
     /**
      * Try to retrieve all reference objects
      *
-     * @param  integer  $uid
+     * @param  int  $uid
      * @param  string  $table
      * @param  string  $field
      * @return array<\TYPO3\CMS\Core\Resource\FileReference>

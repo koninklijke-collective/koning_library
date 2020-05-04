@@ -45,7 +45,7 @@ class HeaderStatusViewHelper extends AbstractViewHelper
     /**
      * Map status code to given HttpUtility status string
      *
-     * @param  string|integer  $statusCode
+     * @param  string|int  $statusCode
      * @return string
      */
     protected static function getResponseCode(string $statusCode): string

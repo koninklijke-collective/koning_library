@@ -65,7 +65,7 @@ class MailService implements SingletonInterface
      * @param  array  $bcc
      * @param  array  $variables
      * @param  array  $attachments
-     * @return boolean
+     * @return bool
      */
     public function sendMail(
         array $recipient,
