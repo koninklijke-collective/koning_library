@@ -18,20 +18,24 @@
         }
     },
 
+    "replace": {
+        "typo3-ter/koning-library": "self.version"
+    },
+
     "require": {
-        "typo3/cms-core": ">=9.5.16 <10.0.0"
+        "typo3/cms-core": ">=9.5.16"
     },
 
     "authors": [
         {
             "name": "Jesper Paardekooper",
-            "email": "jesper@koninklijk.io",
-            "homepage": "http://grandslam-media.nl"
+            "homepage": "https://www.bereik.io/",
+            "email": "koninklijkecollective@gmail.com"
         },
         {
             "name": "Benjamin Serfhos",
-            "email": "benjamin@koninklijk.io",
-            "homepage": "http://serfhos.com"
+            "email": "benjamin@serfhos.com",
+            "homepage": "https://serfhos.com"
         }
     ]
 }
