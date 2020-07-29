@@ -44,7 +44,7 @@ class ResourceUtility
                 ),
                 $queryBuilder->expr()->eq(
                     'uid_foreign',
-                    $queryBuilder->createNamedParameter($field, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
                 )
             );
         $result = $query->execute();
