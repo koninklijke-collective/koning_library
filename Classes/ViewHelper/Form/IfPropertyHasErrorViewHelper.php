@@ -4,9 +4,8 @@ namespace Keizer\KoningLibrary\ViewHelper\Form;
 
 use Closure;
 use Exception;
-use TYPO3\CMS\Fluid\ViewHelpers\CoreFormViewHelper;
-use TYPO3\CMS\Form\ViewHelpers\CoreFormViewHelper as FormViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -14,6 +13,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 class IfPropertyHasErrorViewHelper extends AbstractConditionViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * Constructor
      */
