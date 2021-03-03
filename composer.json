@@ -12,6 +12,12 @@
     "homepage": "https://github.com/koninklijke-collective/koning_library",
     "license": "LGPL-3.0+",
 
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "koning_library"
+        }
+    },
+
     "autoload": {
         "psr-4": {
             "Keizer\\KoningLibrary\\": "Classes/"
