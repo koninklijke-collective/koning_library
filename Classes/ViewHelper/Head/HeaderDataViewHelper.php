@@ -22,12 +22,13 @@ class HeaderDataViewHelper extends AbstractTagBasedViewHelper
      * @param  array  $arguments
      * @param  \Closure  $renderChildrenClosure
      * @param  \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface  $renderingContext
+     * @return mixed
      */
     public static function renderStatic(
         array $arguments,
         Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ): void {
+    ) {
         if (isset($arguments['content']) && !empty($arguments['content'])) {
             $content = $arguments['content'];
         } else {
