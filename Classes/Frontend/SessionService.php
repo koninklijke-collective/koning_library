@@ -2,7 +2,6 @@
 
 namespace Keizer\KoningLibrary\Frontend;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
@@ -24,10 +23,6 @@ class SessionService
     {
         $sessionData = $this->getFrontendUserAuthentication()->getKey('ses', $key);
         if ($sessionData === null) {
-            /** @see \Keizer\KoningLibrary\Domain\Session\SessionInterface legacy fallback */
-            if (is_string($data) && class_exists($data)) {
-                $data = GeneralUtility::makeInstance($data);
-            }
             $this->saveSessionData($key, ['contents' => $data]);
 
             return $data;

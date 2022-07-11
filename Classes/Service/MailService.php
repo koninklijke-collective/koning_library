@@ -99,11 +99,9 @@ class MailService implements SingletonInterface
             $message->attach($attachment);
         }
 
-        $message->setBody($emailBody, 'text/html');
-        $message->addPart(html_entity_decode(strip_tags($emailBody)), 'text/plain');
-
-        $message->send();
-
-        return $message->isSent();
+        return $message->setBody($emailBody, 'text/html')
+            ->addPart(html_entity_decode(strip_tags($emailBody)), 'text/plain')
+            ->send()
+            ->isSent();
     }
 }

@@ -5,12 +5,11 @@ namespace Keizer\KoningLibrary\Controller;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
- * Controller: Abstract Action
+ * @deprecated should avoid using generic module and custom define per controller for updatability
  */
 abstract class AbstractActionController extends ActionController
 {
@@ -18,7 +17,7 @@ abstract class AbstractActionController extends ActionController
      * Translate mapping for <ext>/Resources/Private/Language/locallang.xlf
      *
      * @param  string  $key
-     * @param  array  $arguments
+     * @param  array|null  $arguments
      * @return string
      */
     protected function translate(string $key, ?array $arguments = null): string
@@ -46,7 +45,7 @@ abstract class AbstractActionController extends ActionController
     protected function getObjectManager(): ObjectManagerInterface
     {
         if ($this->objectManager === null) {
-            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            $this->objectManager = GeneralUtility::makeInstance(ObjectManagerInterface::class);
         }
 
         return $this->objectManager;

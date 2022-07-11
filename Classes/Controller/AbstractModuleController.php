@@ -7,7 +7,7 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
- * Controller: Abstract Module Action
+ * @deprecated should avoid using generic module and custom define per controller for updatability
  */
 abstract class AbstractModuleController extends AbstractActionController
 {
